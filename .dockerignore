@@ -6,3 +6,7 @@
 .nx
 .angular
 .md
+Dockerfile
+docker-compose.yml
+.dockerignore
+.env

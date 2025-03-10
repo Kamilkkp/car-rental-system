@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateVehicleDto, PaginatedVehicles, UpdateVehicleDto, Vehicle } from '../models/vehicle.model';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class VehicleService {
-  private apiUrl = 'http://localhost:3000/vehicles';
+  private apiUrl = `${environment.apiUrl}/vehicles`;
 
   constructor(private http: HttpClient) { }
 

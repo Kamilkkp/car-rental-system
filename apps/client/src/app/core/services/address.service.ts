@@ -6,12 +6,14 @@ import {
   CreateAddressDto,
   UpdateAddressDto,
 } from '../models/address.model';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class AddressService {
-  private apiUrl = 'http://localhost:3000/addresses';
+  private apiUrl = `${environment.apiUrl}/addresses`;
 
   constructor(private http: HttpClient) {}
 

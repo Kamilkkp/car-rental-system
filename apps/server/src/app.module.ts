@@ -11,7 +11,7 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/car_rental_db?authSource=admin`
+      `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.NODE_ENV==='production' ? process.env.MONGO_HOST : 'localhost'}:${process.env.MONGO_PORT}/car_rental_db?authSource=admin`
     ),
     BrandsModule,
     AddressesModule,

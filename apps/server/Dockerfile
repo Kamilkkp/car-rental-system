@@ -13,6 +13,8 @@ FROM node:alpine
 
 WORKDIR /app
 
+ENV NODE_ENV=production
+
 COPY --from=builder /app/dist/apps/server /app
 COPY --from=builder /app/node_modules /app/node_modules
 

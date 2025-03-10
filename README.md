@@ -5,6 +5,7 @@
 To run the dev server for your app, use:
 
 ```sh
+docker-compose -f 'docker-compose.yml' up -d --build 'mongodb'
 npx nx serve server
 ```
 

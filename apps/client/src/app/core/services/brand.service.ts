@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Brand, CreateBrandDto, UpdateBrandDto } from '../models/brand.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrandService {
-  private apiUrl = 'http://localhost:3000/brands';
+  private apiUrl = `${environment.apiUrl}/brands`;
 
   constructor(private http: HttpClient) { }
 

@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "webpack-cli build",
-        "args": ["node-env=production"],
+        "args": ["NODE_ENV=production"],
         "transformers": [
           {
             "name": "@nestjs/swagger/plugin",
@@ -21,7 +21,7 @@
       },
       "configurations": {
         "development": {
-          "args": ["node-env=development"]
+          "args": ["NODE_ENV=development"]
         }
       }
     },

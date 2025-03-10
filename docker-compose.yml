@@ -1,0 +1,58 @@
+services:
+  client:
+    build:
+      context: .
+      dockerfile: apps/client/Dockerfile
+    ports:
+      - '3000:80'
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    restart: always
+    ports:
+      - 4000:3000
+    networks:
+      - app-network
+    depends_on:
+      - mongodb
+    
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - ${MONGO_PORT}:27017
+    networks:
+      - app-network
+    volumes:
+      - dbdata:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+      ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:

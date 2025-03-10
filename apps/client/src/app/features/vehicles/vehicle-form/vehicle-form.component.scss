@@ -1,0 +1,45 @@
+.address-section {
+    margin: 1rem 0;
+    
+    .address-option {
+      padding: 8px;
+      width: 100%;
+      
+      .header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+        
+        .name {
+          font-weight: 500;
+          color: #333;
+        }
+        
+        .email {
+          color: #666;
+          font-size: 0.9em;
+        }
+      }
+      
+      .details {
+        font-size: 0.9em;
+        color: #444;
+        line-height: 1.4;
+        
+        div:not(:last-child) {
+          margin-bottom: 2px;
+        }
+      }
+    }
+  
+    button {
+      margin-top: 8px;
+      
+      mat-icon {
+        font-size: 18px;
+        height: 18px;
+        width: 18px;
+        margin-right: 4px;
+      }
+    }
+  }

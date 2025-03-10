@@ -1,0 +1,57 @@
+<div class="vehicle-list">
+  <h2>Lista pojazdów ({{ paginatedData.totalItems }})</h2>
+  <button mat-raised-button color="primary" routerLink="add">Dodaj nowy pojazd</button>
+
+  <div class="pagination-controls" *ngIf="paginatedData.totalItems > 0">
+    <div class="pagination-info">
+      Strona {{ paginatedData.currentPage }} z {{ paginatedData.totalPages }}
+    </div>
+    
+    <div class="pagination-buttons">
+      <button mat-button 
+              *ngFor="let page of paginatedData.totalPages | range"
+              (click)="onPageChange(page)"
+              [disabled]="paginatedData.currentPage === page">
+        {{ page }}
+      </button>
+    </div>
+  
+    <div class="items-per-page">
+      <mat-form-field>
+        <mat-label>Elementów na stronę</mat-label>
+        <mat-select (selectionChange)="onItemsPerPageChange($event)" [value]="itemsPerPage">
+          <mat-option *ngFor="let option of pageSizeOptions" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div *ngIf="paginatedData.data.length > 0; else noVehicles">
+    <mat-card *ngFor="let vehicle of paginatedData.data" class="vehicle-card">
+      <mat-card-header>
+        <mat-card-title>{{ vehicle.brand.name }} - {{ vehicle.registrationNumber }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>VIN: {{ vehicle.vin }}</p>
+        <p>Status: {{ vehicle.isRented ? 'Wypożyczony' : 'Dostępny' }}</p>
+        <p *ngIf="vehicle.address">Klient: {{ vehicle.address.name }} {{ vehicle.address.surname }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-icon-button color="primary" [routerLink]="['edit', vehicle._id]">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteVehicle(vehicle._id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <ng-template #noVehicles>
+    <div class="no-results">
+      <p>Brak pojazdów do wyświetlenia</p>
+    </div>
+  </ng-template>
+</div>

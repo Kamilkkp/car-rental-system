@@ -1,0 +1,123 @@
+<form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()" class="vehicle-form">
+  <h2>{{ isEditMode ? 'Edytuj pojazd' : 'Dodaj nowy pojazd' }}</h2>
+  <h3>Dane pojazdu</h3>
+  <mat-form-field>
+    <mat-label>Marka</mat-label>
+    <mat-select formControlName="brand" required>
+      <mat-option *ngIf="brands.length === 0" disabled>
+        Ładowanie marek...
+      </mat-option>
+      <mat-option *ngFor="let brand of brands" [value]="brand._id">
+        {{ brand.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="vehicleForm.get('brand')?.hasError('required')">
+      Marka jest wymagana
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Numer rejestracyjny</mat-label>
+    <input matInput formControlName="registrationNumber" required>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>VIN</mat-label>
+    <input matInput formControlName="vin" required>
+    <mat-error *ngIf="vehicleForm.get('vin')?.hasError('minlength')">
+      VIN musi mieć 17 znaków
+    </mat-error>
+  </mat-form-field>
+
+  <mat-checkbox formControlName="isRented">Aktualnie wypożyczony</mat-checkbox>
+
+
+
+  <div class="address-section" *ngIf="vehicleForm.get('isRented')?.value">
+    <h3>Dane klienta</h3>
+
+    <div formGroupName="address" *ngIf="vehicleForm.get('address._id')?.value || isAddressEditMode || isCreateNewAddressEditMode">
+      <mat-form-field>
+        <mat-label>Imię</mat-label>
+        <input matInput [value]="vehicleForm.get('address.name')?.value"  formControlName="name" [readonly]="!isAddressEditMode && !isCreateNewAddressEditMode">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nazwisko</mat-label>
+        <input matInput [value]="vehicleForm.get('address.surname')?.value" formControlName="surname" [readonly]="!isAddressEditMode && !isCreateNewAddressEditMode">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Ulica</mat-label>
+        <input matInput [value]="vehicleForm.get('address.street')?.value" formControlName="street" [readonly]="!isAddressEditMode && !isCreateNewAddressEditMode">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Miasto</mat-label>
+        <input matInput [value]="vehicleForm.get('address.city')?.value" formControlName="city" [readonly]="!isAddressEditMode && !isCreateNewAddressEditMode">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>kod pocztowy</mat-label>
+        <input matInput [value]="vehicleForm.get('address.zipCode')?.value" formControlName="zipCode" [readonly]="!isAddressEditMode && !isCreateNewAddressEditMode">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Państwo</mat-label>
+        <input matInput [value]="vehicleForm.get('address.country')?.value" formControlName="country" [readonly]="!isAddressEditMode && !isCreateNewAddressEditMode">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput [value]="vehicleForm.get('address.email')?.value" formControlName="email" [readonly]="!isAddressEditMode && !isCreateNewAddressEditMode" >
+      </mat-form-field>
+
+      <button type="button" mat-button color="primary" *ngIf="isAddressEditMode" (click)="updateAddress()">
+        Zaktualizuj istniejący adres
+      </button>
+
+      <button type="button" mat-button color="primary" *ngIf="isAddressEditMode" (click)="saveAsNewAddress()">
+        Zapisz jako nowy adres
+      </button>
+
+      <button type="button" mat-button color="primary" *ngIf="isCreateNewAddressEditMode" (click)="createNewAddress()">
+        Zapisz nowy adres
+      </button>
+    </div>
+
+
+    <mat-form-field *ngIf="!isAddressEditMode && !isCreateNewAddressEditMode">
+      <mat-label>Klient</mat-label>
+      <mat-select formControlName="address" (selectionChange)="onAddressSelect($event.value)">
+        <mat-option *ngFor="let address of addresses" [value]="address">
+          <div class="address-option">
+            <div class="header">
+              <span class="name">{{address.name}} {{address.surname}}</span>
+            </div>
+            <div class="details">
+              <div>{{address.email}}</div>
+              <div>{{address.street}}</div>
+              <div>{{address.zipCode}} {{address.city}}</div>
+              <div>{{address.country}}</div>
+            </div>
+          </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <button type="button" mat-button color="primary"
+      *ngIf="!isAddressEditMode && !isCreateNewAddressEditMode && !vehicleForm.get('address._id')?.value"
+      (click)="enableCreateNewAddressEditMode()">
+      Zdefiniuj nowego klienta
+    </button>
+
+    <button type="button" mat-button color="primary" *ngIf="!isAddressEditMode && vehicleForm.get('address._id')?.value"
+      (click)="enableAddressEditMode()">
+      Edytuj dane klienta
+    </button>
+
+    <button type="button" mat-button color="primary" *ngIf="isAddressEditMode || isCreateNewAddressEditMode"
+    (click)="cancel()">
+    Anuluj
+  </button>
+  </div>
+
+  <button mat-raised-button color="primary" type="submit"  *ngIf="!isAddressEditMode && !isCreateNewAddressEditMode">
+    {{ isEditMode ? 'Zapisz zmiany' : 'Dodaj pojazd' }}
+  </button>
+</form>

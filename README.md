@@ -9,7 +9,7 @@ docker-compose -f 'docker-compose.yml' up -d --build 'mongodb'
 npx nx serve server
 ```
 
-To run the dev server for your app, use:
+To run the dev client for your app, use:
 
 ```sh
 npx nx serve client
